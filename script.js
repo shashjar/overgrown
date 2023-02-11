@@ -1,15 +1,11 @@
-document.getElementById("preferences").addEventListener("click", () => {
-  document.getElementById("preferences-overlay").classList.add("visible");
+// TODO: add logic for fetching historical and current tab data
+
+document.getElementById("preferences-button").addEventListener("click", () => {
+  document.getElementById("statistics").classList.remove("visible");
+  document.getElementById("preferences").classList.add("visible");
 });
 
-document.getElementById("close-preferences").addEventListener("click", () => {
-  document.getElementById("preferences-overlay").classList.remove("visible");
+document.getElementById("statistics-button").addEventListener("click", () => {
+  document.getElementById("preferences").classList.remove("visible");
+  document.getElementById("statistics").classList.add("visible");
 });
-
-// document.getElementById("statistics").addEventListener("click", () => {
-//   document.getElementById("statistics-overlay").classList.add("visible");
-// });
-
-// document.getElementById("close-statistics").addEventListener("click", () => {
-//   document.getElementById("statistics-overlay").classList.remove("visible");
-// });

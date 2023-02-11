@@ -23,7 +23,7 @@ h3, p {
     margin: 0;
 }
 
-#preferences-overlay {
+#statistics, #preferences {
     font-size: 20px;
     font-weight: normal;
     background: #ffffff;
@@ -35,24 +35,11 @@ h3, p {
     pointer-events: none;
     transition: opacity 0.2s ease;
 }
-#preferences-overlay.visible {
+#statistics.visible, #preferences.visible {
     opacity: 1;
     pointer-events: all;
 }
-#close-preferences {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    margin: 0px;
-    background: #ffffff;
-    padding-bottom: 2px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: color 0.25s ease, background 0.25s ease;
-    font-size: 40px;
+
+#statistics-button, #preferences-button {
+    opacity: 1;
 }
