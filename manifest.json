@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "Overgrowth",
+    "version": "0.1",
+    "permissions": [
+        "tabs"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "p5.js",
+                "sketch.js"
+            ]
+        }
+    ]
+}
