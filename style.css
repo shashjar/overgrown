@@ -1,0 +1,58 @@
+body {
+    width: 20rem;
+    height: 50rem;
+}
+
+ul {
+    list-style-type: none;
+    padding-inline-start: 0;
+    margin: 1rem 0;
+}
+
+li {
+    padding: 0.25rem;
+}
+li:nth-child(odd) {
+    background: #80808030;
+}
+li:nth-child(even) {
+    background: #ffffff;
+}
+
+h3, p {
+    margin: 0;
+}
+
+#preferences-overlay {
+    font-size: 20px;
+    font-weight: normal;
+    background: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+#preferences-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+#close-preferences {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    margin: 0px;
+    background: #ffffff;
+    padding-bottom: 2px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.25s ease, background 0.25s ease;
+    font-size: 40px;
+}
