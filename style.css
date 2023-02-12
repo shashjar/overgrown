@@ -140,6 +140,7 @@ img {
     display: flex;
     align-self: center;
     justify-self: center;
+    text-align: center;
 
     width: 100%;
     max-width: 190px;
@@ -164,9 +165,10 @@ img {
     display: flex;
     align-self: center;
     justify-self: center;
+    text-align: center;
 
     width: 100%;
-    max-width: 75px;
+    max-width: 60px;
     height: 25px;
     line-height: 1.75;
     color: #333;
