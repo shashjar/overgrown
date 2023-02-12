@@ -17,13 +17,18 @@ let increasing = true;
 let currentTabs = 0;
 var remainingIterations = 0;
 var growthsPerIteration = 10;
-var preferredTabCount = 3;
+var preferredTabCount = localStorage.preferredTabCount;
 
 let length = 5;
 let angleChange = 10;
 let splitChance = 0.99;
 let leafChance = 0.95;
 let fps = 30;
+const GrowthRates = {
+    Fast: 35,
+    Medium: 20,
+    Slow: 10
+};
 let growthRate = 25;
 let startNodeCount = 15;
 let detectRange = 100;
@@ -32,6 +37,10 @@ let leafColor = { r: 86, g: 115, b: 53 };
 let outlineThickness = 2;
 let stemThickness = 4;
 
+const VineColors = {
+    stemColor: { r: 37, g: 66, b: 14 },
+    leafColor: { r: 86, g: 115, b: 53 }
+};
 
 function setup() {
     let c = createCanvas(displayWidth, displayHeight);
@@ -41,13 +50,31 @@ function setup() {
     console.log("Initializing node");
     layers = [];
     currentNodes = [];
-    console.log("LINE 43 CURRENT NODES: " + currentNodes);
     for (let i = 0; i < startNodeCount; i++) {
         currentNodes.push(new Vine(Math.floor(Math.random() * windowWidth), 0, 90, undefined));
     }
     frameRate(fps);
     angleMode(DEGREES);
     remainingIterations += growthsPerIteration;
+
+    switch (localStorage.growthSpeed) {
+        case "Fast":
+            growthRate = Fast;
+            break;
+        case "Medium":
+            growthRate = Medium;
+            break;
+        case "Slow":
+            growthRate = Slow;
+            break;
+    }
+
+    switch (localStorage.plant) {
+        case "Vines":
+            stemColor = VineColors.stemColor;
+            leafColor = VineColors.leafColor;
+            break;
+    }
 }
 function draw() {
     clear();
