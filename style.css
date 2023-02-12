@@ -54,6 +54,12 @@ p {
   cursor: default;
 }
 
+#stat-entries {
+  margin: 20px;
+  padding: 5px;
+  color: #25420E;
+}
+
 #header > img {
   margin: 0 3%;
 }

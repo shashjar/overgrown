@@ -1,5 +1,3 @@
-// TODO: add logic for fetching historical and current tab data
-
 /**
  * Set all elements containing information that could be retrieved from local storage
  */
@@ -21,6 +19,47 @@ if (localStorage.preferredTabCount) {
   const preferredTabCount = document.getElementById("preferred-tab-count");
   preferredTabCount.value = localStorage.preferredTabCount;
 }
+
+// Total Opened - 24 Hours
+chrome.storage.local.get(["dayOpen"]).then((result) => {
+  if (result && result.dayOpen) {
+    const dayOpen = removeOldDays(JSON.parse(result.dayOpen));
+    document.getElementById("open24").innerHTML = dayOpen.length;
+  } else {
+    document.getElementById("open24").innerHTML = "0";
+  }
+});
+
+// Total Closed - 24 Hours
+chrome.storage.local.get(["dayClosed"]).then((result) => {
+  if (result && result.dayClosed) {
+    const dayClosed = removeOldDays(JSON.parse(result.dayClosed));
+    console.log("Setting day close to be", dayClosed.length);
+    document.getElementById("close24").innerHTML = dayClosed.length;
+  } else {
+    document.getElementById("close24").innerHTML = "0";
+  }
+});
+
+// Total Opened - All Time
+chrome.storage.local.get(["totalOpenCount"]).then((result) => {
+  if (result && result.totalOpenCount) {
+    const totalOpenCount = JSON.parse(result.totalOpenCount);
+    document.getElementById("openall").innerHTML = totalOpenCount;
+  } else {
+    document.getElementById("openall").innerHTML = "0";
+  }
+});
+
+// Total Closed - All Time
+chrome.storage.local.get(["totalClosedCount"]).then((result) => {
+  if (result && result.totalClosedCount) {
+    const totalClosedCount = JSON.parse(result.totalClosedCount);
+    document.getElementById("closeall").innerHTML = totalClosedCount;
+  } else {
+    document.getElementById("closeall").innerHTML = "0";
+  }
+});
 
 /**
  * Provide event listeners to support user interactions
@@ -99,3 +138,24 @@ document
     let value = input.value;
     localStorage.preferredTabCount = value;
   });
+
+/**
+ * Removes logged dates for opened tabs that are older than a day
+ * @param {*} dateArray array of datelogs maintained for tabs recently opened or closed
+ */
+function removeOldDays(dateArray) {
+  const curDate = new Date();
+  const result = dateArray.filter((date) => !dayDiff(curDate, new Date(date)));
+  return result;
+}
+
+/**
+ * Compares the time between two dates and returns true if it is greater than 24 hours
+ * @param {*} dateOne
+ * @param {*} dateTwo
+ * @returns a boolean based on date difference
+ */
+function dayDiff(dateOne, dateTwo) {
+  const minuteDiff = Math.abs(dateOne.getTime() - dateTwo.getTime()) / 60000;
+  return minuteDiff >= 1440;
+}
