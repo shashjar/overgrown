@@ -9,7 +9,7 @@ let splitChance = 0.99;
 let leafChance = 0.95;
 let fps = 15;
 let growthRate = 100;
-let startNodeCount = 25;
+let startNodeCount = 15;
 let detectRange = 100;
 let stemColor = { r: 37, g: 66, b: 14 };
 let leafColor = { r: 86, g: 115, b: 53 };
@@ -19,6 +19,7 @@ let stemThickness = 4;
 function setup() {
     let c = createCanvas(windowWidth, windowHeight);
     c.position(0, 0);
+    c.style('pointer-events', 'none');
     clear();
     console.log("Initializing node");
     currentNodes = []
