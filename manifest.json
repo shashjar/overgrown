@@ -9,5 +9,5 @@
     "default_popup": "overgrown.html"
   },
   "host_permissions": ["https://developer.chrome.com/*"],
-  "permissions": ["tabGroups"]
+  "permissions": []
 }
