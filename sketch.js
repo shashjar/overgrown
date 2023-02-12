@@ -1,5 +1,6 @@
 var startNode;
-var startingNodes = []
+var currentNodes = []
+var newNodes = [];
 let timer = 0;
 
 let length = 5;
@@ -8,8 +9,8 @@ let splitChance = 0.99;
 let leafChance = 0.95;
 let fps = 15;
 let growthRate = 100;
-let startNodeCount = 10;
-let detectRange = 150;
+let startNodeCount = 25;
+let detectRange = 100;
 let stemColor = { r: 37, g: 66, b: 14 };
 let leafColor = { r: 86, g: 115, b: 53 };
 let outlineThickness = 2;
@@ -20,8 +21,9 @@ function setup() {
     c.position(0, 0);
     clear();
     console.log("Initializing node");
+    currentNodes = []
     for (let i = 0; i < startNodeCount; i++) {
-        startingNodes.push(new Node(Math.floor(Math.random() * windowWidth), 0, 90));
+        currentNodes.push(new Node(Math.floor(Math.random() * windowWidth), 0, 90));
     }
     frameRate(fps);
     angleMode(DEGREES);
@@ -30,9 +32,11 @@ function draw() {
     stroke(stemColor.r, stemColor.g, stemColor.b);
     strokeWeight(outlineThickness);
     if (millis() >= growthRate + timer) {
-        startingNodes.forEach(function (node) {
+        newNodes = []
+        currentNodes.forEach(function (node) {
             node.grow();
         })
+        currentNodes = newNodes
         timer = millis();
     }
 }
@@ -63,65 +67,59 @@ class Node {
     }
 
     grow() {
-        if (this.others.length === 0) {
-            console.log("no children");
-            let count = 1;
-            if (Math.random() > splitChance) count = 2;
-            for (let i = 0; i < count; i++) {
-                console.log(this);
-                let deltaX = cos(this.angle);
-                let deltaY = sin(this.angle);
-                let deltaAngle; // [-10, 10]
+        console.log("no children");
+        let count = 1;
+        if (Math.random() > splitChance) count = 2;
+        for (let i = 0; i < count; i++) {
+            console.log(this);
+            let deltaX = cos(this.angle);
+            let deltaY = sin(this.angle);
+            let deltaAngle; // [-10, 10]
 
-                let vineAngle = this.angle;
+            let vineAngle = this.angle;
 
-                console.log("x: " + this.x + " y: " + this.y);
+            console.log("x: " + this.x + " y: " + this.y);
 
-                if (this.x + (deltaX * detectRange) < 0) {
-                    console.log("left");
-                    if (vineAngle > 180 && vineAngle < 270) {
-                        deltaAngle = Math.floor(Math.random() * angleChange * 2 + 1); // [0, 20]
-                    } if (vineAngle > 90 && vineAngle < 180) {
-                        deltaAngle = -Math.floor(Math.random() * angleChange * 2 + 1); // [-20, 0]
-                    }
-                } else if (this.x + (deltaX * detectRange) > windowWidth) {
-                    console.log("right");
-                    if (vineAngle > 0 && vineAngle < 90) {
-                        deltaAngle = Math.floor(Math.random() * angleChange * 2 + 1); // [0, 20]
-                    } if (vineAngle > 270 && vineAngle < 360) {
-                        deltaAngle = -Math.floor(Math.random() * angleChange * 2 + 1); // [-20, 0]
-                    }
-                } else if (this.y + (deltaY * detectRange) < 0) {
-                    console.log("top");
-                    if (vineAngle > 0 && vineAngle < 90) {
-                        deltaAngle = -Math.floor(Math.random() * angleChange * 2 + 1); // [-20, 0]
-                    } if (vineAngle > 90 && vineAngle < 180) {
-                        deltaAngle = Math.floor(Math.random() * angleChange * 2 + 1); // [0, 20]
-                    }
-                } else if (this.y + (deltaY * detectRange) > windowHeight) {
-                    console.log("bottom");
-                    if (vineAngle > 180 && vineAngle < 270) {
-                        deltaAngle = -Math.floor(Math.random() * angleChange * 2 + 1); // [-20, 0]
-                    } if (vineAngle > 270 && vineAngle < 360) {
-                        deltaAngle = Math.floor(Math.random() * angleChange * 2 + 1); // [0, 20]
-                    }
-                } else {
-                    console.log("contained")
-                    deltaAngle = Math.floor(Math.random() * angleChange * 2 + 1) - angleChange;
+            if (this.x + (deltaX * detectRange) < 0) {
+                console.log("left");
+                if (vineAngle > 180 && vineAngle < 270) {
+                    deltaAngle = Math.floor(Math.random() * (angleChange * 2 + 1)); // [0, 20]
+                } if (vineAngle > 90 && vineAngle < 180) {
+                    deltaAngle = -Math.floor(Math.random() * (angleChange * 2 + 1)); // [-20, 0]
                 }
-
-                console.log("this.x + deltaX: " + this.x + ", " + (deltaX * length));
-                console.log("this.y + deltaY: " + this.y + ", " + (deltaY * length));
-                console.log("this.angle + deltaAngle: " + this.angle + ", " + deltaAngle);
-                let other = new Node(this.x + (deltaX * length), this.y + (deltaY * length), (this.angle + deltaAngle) % 360)
-                this.others.push(other);
-                this.draw();
+            } else if (this.x + (deltaX * detectRange) > windowWidth) {
+                console.log("right");
+                if (vineAngle > 0 && vineAngle < 90) {
+                    deltaAngle = Math.floor(Math.random() * (angleChange * 2 + 1)); // [0, 20]
+                } if (vineAngle > 270 && vineAngle < 360) {
+                    deltaAngle = -Math.floor(Math.random() * (angleChange * 2 + 1)); // [-20, 0]
+                }
+            } else if (this.y + (deltaY * detectRange) < 0) {
+                console.log("top");
+                if (vineAngle > 0 && vineAngle < 90) {
+                    deltaAngle = -Math.floor(Math.random() * (angleChange * 2 + 1)); // [-20, 0]
+                } if (vineAngle > 90 && vineAngle < 180) {
+                    deltaAngle = Math.floor(Math.random() * (angleChange * 2 + 1)); // [0, 20]
+                }
+            } else if (this.y + (deltaY * detectRange) > windowHeight) {
+                console.log("bottom");
+                if (vineAngle > 180 && vineAngle < 270) {
+                    deltaAngle = -Math.floor(Math.random() * (angleChange * 2 + 1)); // [-20, 0]
+                } if (vineAngle > 270 && vineAngle < 360) {
+                    deltaAngle = Math.floor(Math.random() * (angleChange * 2 + 1)); // [0, 20]
+                }
+            } else {
+                console.log("contained")
+                deltaAngle = Math.floor(Math.random() * (angleChange * 2 + 1)) - angleChange;
             }
-        } else {
-            this.others.forEach(function (other) {
-                //console.log("growing next");
-                other.grow();
-            })
+
+            console.log("this.x + deltaX: " + this.x + ", " + (deltaX * length));
+            console.log("this.y + deltaY: " + this.y + ", " + (deltaY * length));
+            console.log("this.angle + deltaAngle: " + this.angle + ", " + deltaAngle);
+            let other = new Node(this.x + (deltaX * length), this.y + (deltaY * length), (this.angle + deltaAngle) % 360)
+            this.others.push(other);
+            newNodes.push(other);
+            this.draw();
         }
     }
 
@@ -142,7 +140,6 @@ class Node {
 
             curve(c1.x, c1.y, p1.x, p1.y, p2.x, p2.y, c2.x, c2.y);
             curve(c3.x, c3.y, p1.x, p1.y, p2.x, p2.y, c4.x, c4.y);
-
         }
     }
 }
