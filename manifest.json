@@ -9,5 +9,8 @@
     "default_popup": "overgrown.html"
   },
   "host_permissions": ["https://developer.chrome.com/*", "http://*/*", "https://*/*"],
-  "permissions": ["tabs", "activeTab"]
+  "permissions": ["tabs", "activeTab", "background", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  }
 }
