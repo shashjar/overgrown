@@ -28,12 +28,11 @@
       <input type="text" id="plant" />
     </div>
 
-    <!-- TODO: make Preferences page -->
     <div id="preferences">
       <h1 id="page-header">Preferences</h1>
 
-      <h3 id="category-header">Current Plant</h3>  <!-- TODO: Get this out of local storage if it exists -->
-      <select name="dropdown" id="dropdown">
+      <h3 id="category-header">Current Plant</h3>
+      <select name="plant-dropdown" id="plant-dropdown" class="dropdown">
         <option value="random" selected>Random</option>
         <option value="cactus">Cactus</option>
         <option value="thorns">Thorns</option>
@@ -41,15 +40,15 @@
         <option value="bamboo">Bamboo</option>
       </select>
 
-      <h3 id="category-header">Current Growth Speed</h3>  <!-- TODO: Get this out of local storage if it exists -->
-      <select name="dropdown" id="dropdown">
+      <h3 id="category-header">Current Growth Speed</h3>
+      <select name="speed-dropdown" id="speed-dropdown" class="dropdown">
         <option value="medium" selected>Medium</option>
         <option value="slow">Slow</option>
         <option value="fast">Fast</option>
       </select>
 
-      <h3 id="category-header">Preferred Tab Count:</h3> <!-- TODO: Get this out of local storage if it exists -->
-      <p id="bold-number">5</p>
+      <h3 id="category-header">Preferred Tab Count:</h3>
+      <input type="number" min="1" id="preferred-tab-count" class="bold-number"/>
     </div>
 
     <div id="footer">
