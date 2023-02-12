@@ -1,8 +1,11 @@
 // All-Time Statistics on Tab Creation and Deletion (since installation of browser extension)
 chrome.storage.local.get(["totalOpenCount"]).then((result) => {
-  if (result && result.key) {
-    console.log("Total Open Count returned from local storage", result.key);
-    const totalOpenCount = result.key;
+  if (result && result.totalOpenCount) {
+    console.log(
+      "Total Open Count returned from local storage",
+      result.totalOpenCount
+    );
+    const totalOpenCount = result.totalOpenCount;
     document.getElementById("openall").value = totalOpenCount;
   } else {
     console.log("In else case for total open count storage");
@@ -11,8 +14,8 @@ chrome.storage.local.get(["totalOpenCount"]).then((result) => {
 });
 
 chrome.storage.local.get(["totalClosedCount"]).then((result) => {
-  if (result && result.key) {
-    const totalClosedCount = result.key;
+  if (result && result.totalClosedCount) {
+    const totalClosedCount = result.totalClosedCount;
     document.getElementById("closedall").innerHTML = totalClosedCount;
   } else {
     chrome.storage.local.set({ totalClosedCount: "0" });
@@ -29,8 +32,8 @@ chrome.storage.local.get(["totalClosedCount"]).then((result) => {
 
 // 24-Hours Statistics on Tab Creation and Deletion
 chrome.storage.local.get(["dayOpen"]).then((result) => {
-  if (result && result.key) {
-    const dayOpen = removeOldDays(JSON.parse(result.key));
+  if (result && result.dayOpen) {
+    const dayOpen = removeOldDays(JSON.parse(result.dayOpen));
     chrome.storage.local.set({ dayOpen: JSON.stringify(dayOpen) });
     document.getElementById("open24").innerHTML = dayOpen.length;
   } else {
@@ -48,8 +51,8 @@ chrome.storage.local.get(["dayOpen"]).then((result) => {
 // }
 
 chrome.storage.local.get(["dayClosed"]).then((result) => {
-  if (result && result.key) {
-    const dayClosed = removeOldDays(JSON.parse(result.key));
+  if (result && result.dayClosed) {
+    const dayClosed = removeOldDays(JSON.parse(result.dayClosed));
     chrome.storage.local.set({ dayClosed: JSON.stringify(dayClosed) });
     document.getElementById("close24").innerHTML = dayClosed.length;
   } else {
@@ -92,9 +95,10 @@ chrome.tabs.onCreated.addListener((tab) => {
   console.log("creation");
   const datelog = new Date();
   chrome.storage.local.get(["totalOpenCount"]).then((result) => {
+    console.log("Result:", result);
     let curTotalOpen;
-    if (result && result.key) {
-      curTotalOpen = JSON.parse(result.key);
+    if (result && result.totalOpenCount) {
+      curTotalOpen = JSON.parse(result.totalOpenCount);
     } else {
       curTotalOpen = "0";
     }
@@ -111,8 +115,8 @@ chrome.tabs.onCreated.addListener((tab) => {
 
   chrome.storage.local.get(["dayOpen"]).then((result) => {
     let curDayOpen;
-    if (result && result.key) {
-      curDayOpen = JSON.parse(result.key);
+    if (result && result.dayOpen) {
+      curDayOpen = JSON.parse(result.dayOpen);
     } else {
       curDayOpen = [];
     }
