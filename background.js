@@ -1,5 +1,5 @@
 // Event Listener for Tab Creation
-chrome.tabs.onCreated.addListener(async (tab) => {
+chrome.tabs.onCreated.addListener((tab) => {
   console.log("creation");
   console.log(tab);
 
@@ -29,8 +29,6 @@ function incrementTotalOpenCount() {
 }
 
 function incrementDayOpenCount() {
-  const datelog = new Date();
-
   chrome.storage.local.get(["dayOpen"]).then((result) => {
     let curDayOpen;
     if (result && result.dayOpen) {
@@ -39,6 +37,7 @@ function incrementDayOpenCount() {
       curDayOpen = [];
     }
 
+    const datelog = new Date();
     curDayOpen = removeOldDays(curDayOpen);
     curDayOpen.push(datelog);
     chrome.storage.local
@@ -50,12 +49,55 @@ function incrementDayOpenCount() {
 }
 
 // Event Listener for Tab Deletion
-// chrome.tabs.onRemoved.addListener((tabId, info) => {
-//   console.log("deletion");
-//   const datelog = new Date();
-//   localStorage.totalClosedCount = JSON.stringify(totalClosedCount + 1);
-//   localStorage.dayClosed = JSON.stringify(dayClosed.push(datelog));
-// });
+chrome.tabs.onRemoved.addListener((tabId, info) => {
+  console.log("deletion");
+
+  incrementTotalClosedCount();
+  incrementDayClosedCount();
+});
+
+function incrementTotalClosedCount() {
+  console.log("CALL TO INCREMENT TOTAL CLOSED COUNT");
+  chrome.storage.local.get(["totalClosedCount"]).then((result) => {
+    console.log("Total Closed Count Result:", result);
+    let curTotalClosed;
+    if (result && result.totalClosedCount) {
+      curTotalClosed = JSON.parse(result.totalClosedCount);
+      console.log("Current Total Closed Count:", curTotalClosed);
+    } else {
+      curTotalClosed = "0";
+    }
+
+    curTotalClosed = Number(curTotalClosed) + 1;
+    chrome.storage.local
+      .set({ totalClosedCount: JSON.stringify(curTotalClosed) })
+      .then(() => {
+        console.log("Setting total closed count to be: ", curTotalClosed);
+      });
+  });
+}
+
+function incrementDayClosedCount() {
+  chrome.storage.local.get(["dayClosed"]).then((result) => {
+    let curDayClosed;
+    if (result && result.dayClosed) {
+      curDayClosed = JSON.parse(result.dayClosed);
+      console.log("curDayClosed:", curDayClosed);
+    } else {
+      console.log("in else statement");
+      curDayClosed = [];
+    }
+
+    const datelog = new Date();
+    curDayClosed = removeOldDays(curDayClosed);
+    curDayClosed.push(datelog);
+    chrome.storage.local
+      .set({ dayClosed: JSON.stringify(curDayClosed) })
+      .then(() => {
+        console.log("Setting current day close count to be: ", curDayClosed);
+      });
+  });
+}
 
 /**
  * Removes logged dates for opened tabs that are older than a day

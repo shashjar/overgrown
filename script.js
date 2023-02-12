@@ -1,5 +1,3 @@
-// TODO: add logic for fetching historical and current tab data
-
 /**
  * Set all elements containing information that could be retrieved from local storage
  */
@@ -33,14 +31,15 @@ chrome.storage.local.get(["dayOpen"]).then((result) => {
 });
 
 // Total Closed - 24 Hours
-// chrome.storage.local.get(["dayClose"]).then((result) => {
-//   if (result && result.dayClose) {
-//     const dayClose = removeOldDays(JSON.parse(result.dayClose));
-//     document.getElementById("close24").innerHTML = dayClose.length;
-//   } else {
-//     document.getElementById("close24").innerHTML = 0;
-//   }
-// });
+chrome.storage.local.get(["dayClosed"]).then((result) => {
+  if (result && result.dayClosed) {
+    const dayClosed = removeOldDays(JSON.parse(result.dayClosed));
+    console.log("Setting day close to be", dayClosed.length);
+    document.getElementById("close24").innerHTML = dayClosed.length;
+  } else {
+    document.getElementById("close24").innerHTML = "0";
+  }
+});
 
 // Total Opened - All Time
 chrome.storage.local.get(["totalOpenCount"]).then((result) => {
@@ -48,11 +47,19 @@ chrome.storage.local.get(["totalOpenCount"]).then((result) => {
     const totalOpenCount = JSON.parse(result.totalOpenCount);
     document.getElementById("openall").innerHTML = totalOpenCount;
   } else {
-    document.getElementById("openall").innerHTML = 0;
+    document.getElementById("openall").innerHTML = "0";
   }
 });
 
 // Total Closed - All Time
+chrome.storage.local.get(["totalClosedCount"]).then((result) => {
+  if (result && result.totalClosedCount) {
+    const totalClosedCount = JSON.parse(result.totalClosedCount);
+    document.getElementById("closeall").innerHTML = totalClosedCount;
+  } else {
+    document.getElementById("closeall").innerHTML = "0";
+  }
+});
 
 /**
  * Provide event listeners to support user interactions
