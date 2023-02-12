@@ -53,12 +53,17 @@ p {
   cursor: default;
 }
 
+#stat-entries {
+  margin: 20px;
+  padding: 5px;
+  color: #25420E;
+}
+
 #statistics,
 #preferences {
   height: 81.7%;
   width: 100%;
-  font-size: 20px;
-  font-weight: normal;
+  font-size: 17px;
   background: #ffffff;
   border-radius: 10px;
   text-align: center;
