@@ -22,20 +22,18 @@ if (localStorage.preferredTabCount) {
   preferredTabCount.value = localStorage.preferredTabCount;
 }
 
-// All time stats
+// All-Time Tab Statistics (since installation of browser extension)
 if (localStorage.totalOpenCount) {
   const totalOpenCount = JSON.parse(localStorage.totalOpenCount);
   document.getElementById("openall").innerHTML = totalOpenCount;
-}
-else {
+} else {
   localStorage.totalOpenCount = "0";
 }
 
 if (localStorage.totalClosedCount) {
   const totalClosedCount = JSON.parse(localStorage.totalClosedCount);
   document.getElementById("closeall").innerHTML = totalClosedCount;
-}
-else {
+} else {
   localStorage.totalClosedCount = "0";
 }
 
@@ -44,8 +42,7 @@ if (localStorage.dayOpen) {
   const dayOpen = removeOldDays(JSON.parse(localStorage.dayOpen));
   localStorage.dayOpen = JSON.stringify(dayOpen);
   document.getElementById("open24").innerHTML = dayOpen.length;
-}
-else {
+} else {
   localStorage.dayOpen = JSON.stringify([]);
 }
 
@@ -53,8 +50,7 @@ if (localStorage.dayClosed) {
   const dayClosed = removeOldDays(JSON.parse(localStorage.dayClosed));
   localStorage.dayClosed = JSON.stringify(dayClosed);
   document.getElementById("close24").innerHTML = dayClosed.length;
-}
-else {
+} else {
   localStorage.dayClosed = JSON.stringify([]);
 }
 
@@ -64,18 +60,18 @@ else {
  */
 function removeOldDays(dateArray) {
   const curDate = new Date();
-  const result = dateArray.filter(date => !(dayDiff(curDate, date)))
+  const result = dateArray.filter((date) => !dayDiff(curDate, date));
   return result;
 }
 
 /**
  * Compares the time between two dates and returns true if it is greater than 24 hours
- * @param {*} dateOne 
- * @param {*} dateTwo 
+ * @param {*} dateOne
+ * @param {*} dateTwo
  * @returns a boolean based on date difference
  */
 function dayDiff(dateOne, dateTwo) {
-  const minuteDiff = Math.abs((dateOne.getTime() - dateTwo.getTime())) / 60000;
+  const minuteDiff = Math.abs(dateOne.getTime() - dateTwo.getTime()) / 60000;
   return minuteDiff >= 1440;
 }
 
@@ -126,21 +122,22 @@ document
     localStorage.preferredTabCount = value;
   });
 
-chrome.tabs.onCreated.addListener(() => {
+// Listener for New Tab Creation
+chrome.tabs.onCreated.addListener((tab) => {
   const datelog = new Date();
-  console.log("onCreated")
-  console.log(typeof(totalOpenCount))
-  console.log(totalOpenCount)
-  localStorage.totalOpenCount = JSON.stringify(totalOpenCount + 1);
-  localStorage.dayOpen = JSON.stringify(dayOpen.push(datelog));
+  console.log("Detected new tab opened");
+  // console.log(typeof totalOpenCount);
+  // console.log(totalOpenCount);
+  // localStorage.totalOpenCount = JSON.stringify(totalOpenCount + 1);
+  // localStorage.dayOpen = JSON.stringify(dayOpen.push(datelog));
 });
 
-chrome.tabs.onRemoved.addListener(() => {
+// Listener for Tab Deletion
+chrome.tabs.onRemoved.addListener((tab) => {
   const datelog = new Date();
-  console.log("onRemoved")
-  console.log(typeof(totalClosedCount))
-  console.log(totalClosedCount)
-  localStorage.totalClosedCount = JSON.stringify(totalClosedCount + 1);
-  localStorage.dayClosed = JSON.stringify(dayClosed.push(datelog));
+  console.log("Detected tab that was closed");
+  // console.log(typeof totalClosedCount);
+  // console.log(totalClosedCount);
+  // localStorage.totalClosedCount = JSON.stringify(totalClosedCount + 1);
+  // localStorage.dayClosed = JSON.stringify(dayClosed.push(datelog));
 });
-
