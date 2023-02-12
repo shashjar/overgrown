@@ -43,7 +43,7 @@ function setup() {
     currentNodes = [];
     console.log("LINE 43 CURRENT NODES: " + currentNodes);
     for (let i = 0; i < startNodeCount; i++) {
-        currentNodes.push(new Node(Math.floor(Math.random() * windowWidth), 0, 90, undefined));
+        currentNodes.push(new Vine(Math.floor(Math.random() * windowWidth), 0, 90, undefined));
     }
     frameRate(fps);
     angleMode(DEGREES);
@@ -103,7 +103,7 @@ function draw() {
     }
 }
 
-class Node {
+class Vine {
     constructor(x, y, angle = 0, parent = undefined) {
         this.x = Math.floor(x);
         this.y = Math.floor(y);
@@ -179,7 +179,7 @@ class Node {
             /* console.log("this.x + deltaX: " + this.x + ", " + (deltaX * length));
             console.log("this.y + deltaY: " + this.y + ", " + (deltaY * length));
             console.log("this.angle + deltaAngle: " + this.angle + ", " + deltaAngle); */
-            let other = new Node(this.x + (deltaX * length), this.y + (deltaY * length), (this.angle + deltaAngle) % 360, this)
+            let other = new Vine(this.x + (deltaX * length), this.y + (deltaY * length), (this.angle + deltaAngle) % 360, this)
             this.others.push(other);
             newNodes.push(other);
             this.draw();
