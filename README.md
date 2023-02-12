@@ -1,4 +1,4 @@
- # ![logo](https://user-images.githubusercontent.com/93111430/218298198-bba73dd3-ce51-46df-8a0b-8bd75ba43e0d.png) **Overgrown- Prune Your Tabs!** ![logo](https://user-images.githubusercontent.com/93111430/218298198-bba73dd3-ce51-46df-8a0b-8bd75ba43e0d.png)
+ # ![logo](https://user-images.githubusercontent.com/93111430/218298198-bba73dd3-ce51-46df-8a0b-8bd75ba43e0d.png) **Overgrown - Prune Your Tabs!** ![logo](https://user-images.githubusercontent.com/93111430/218298198-bba73dd3-ce51-46df-8a0b-8bd75ba43e0d.png)
 
 ## Overview
 Overgrown is a solution to the common problem of cluttered, mismanaged tabs in a long browsing session; rather than letting unused tabs sit in a browser collecting dust Overgrown encourages pruning discarded tabs like one would prune a bonsai tree. The more tabs that accumulate in a browsing session, the more that vines, bamboo, or other growths crowd the user's screen!
