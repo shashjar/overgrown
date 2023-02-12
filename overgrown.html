@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div id="header">
+      <img src="images/info.svg" id="info-img" />
+      <h1 id="title">Overgrown</h1>
+      <img src="images/x.svg" id="close-out" />
+    </div>
+
+    <div id="statistics" class="visible">
+      <h1>Statistics</h1>
+
+      <div id="stat-entries">
+        <p>Tabs Opened - 24 Hrs</p>
+        <h3 id="open24">50</h3>
+      </div>
+      <div id="stat-entries">
+        <p>Tabs Closed - 24 Hrs</p>
+        <h3 id="close24">Num</h3>
+      </div>
+      <div id="stat-entries">
+        <p>Tabs Opened - All Time</p>
+        <h3 id="openall">Num</h3>
+      </div>
+      <div id="stat-entries">
+        <p>Tabs Closed - All Time</p>
+        <h3 id="closeall">Num</h3>
+      </div>
+    </div>
+
+    <div id="preferences">
+      <h1 id="page-header">Preferences</h1>
+
+      <h3 id="category-header">Current Plant</h3>
+      <select name="plant-dropdown" id="plant-dropdown" class="dropdown">
+        <option value="random" selected>Random</option>
+        <option value="cactus">Cactus</option>
+        <option value="thorns">Thorns</option>
+        <option value="vines">Vines</option>
+        <option value="bamboo">Bamboo</option>
+      </select>
+
+      <h3 id="category-header">Current Growth Speed</h3>
+      <select name="speed-dropdown" id="speed-dropdown" class="dropdown">
+        <option value="medium" selected>Medium</option>
+        <option value="slow">Slow</option>
+        <option value="fast">Fast</option>
+      </select>
+
+      <h3 id="category-header">Preferred Tab Count:</h3>
+      <input type="number" min="1" id="preferred-tab-count" class="bold-number"/>
+    </div>
+
+    <div id="footer">
+      <div id="statistics-button" class="button active-button">
+        <img src="images/stats.svg" alt="Statistics tab button" />
+      </div>
+      <div id="preferences-button" class="button">
+        <img src="images/profile.svg" alt="Profile tab button" />
+      </div>
+    </div>
+
+    <script src="./script.js" type="module"></script>
+    <script src="./background.js" type="module"></script>
+  </body>
+</html>
