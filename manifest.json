@@ -12,5 +12,16 @@
   "permissions": ["tabs", "activeTab", "background", "storage", "scripting", "tabGroups"],
   "background": {
     "service_worker": "background.js"
-  }
+  },
+   "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "p5.js",
+                "sketch.js"
+            ]
+        }
+    ]
 }
