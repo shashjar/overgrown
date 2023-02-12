@@ -8,8 +8,8 @@
   "action": {
     "default_popup": "overgrown.html"
   },
-  "host_permissions": ["https://developer.chrome.com/*", "http://*/*", "https://*/*"],
-  "permissions": ["tabs", "activeTab", "background", "storage"],
+  "host_permissions": ["https://developer.chrome.com/*", "http://*/*", "https://*/*", "<all_urls>"],
+  "permissions": ["tabs", "activeTab", "background", "storage", "scripting", "tabGroups"],
   "background": {
     "service_worker": "background.js"
   }

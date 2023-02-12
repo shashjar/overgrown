@@ -85,6 +85,37 @@ document.getElementById("statistics-button").addEventListener("click", () => {
     .classList.remove("active-button");
 });
 
+// Header actions - closing out, hovering over info
+document
+  .getElementById("close-out")
+  .addEventListener("click", () => window.close());
+
+document.getElementById("info-img").addEventListener(
+  "mouseover",
+  () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        files: ["overlay/create.js"],
+      });
+    });
+  },
+  console.log
+);
+
+document.getElementById("info-img").addEventListener(
+  "mouseleave",
+  () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        files: ["overlay/remove.js"],
+      });
+    });
+  },
+  console.log
+);
+
 // Plant Dropdown Selection Change
 document.getElementById("plant-dropdown").addEventListener("change", () => {
   let select = document.getElementById("plant-dropdown");
