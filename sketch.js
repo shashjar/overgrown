@@ -17,7 +17,7 @@ let increasing = true;
 let currentTabs = 0;
 var remainingIterations = 0;
 var growthsPerIteration = 10;
-var preferredTabCount = 8;
+var preferredTabCount = 3;
 
 let length = 5;
 let angleChange = 10;
@@ -39,9 +39,11 @@ function setup() {
     c.style('pointer-events', 'none');
     clear();
     console.log("Initializing node");
-    currentNodes = []
+    layers = [];
+    currentNodes = [];
+    console.log("LINE 43 CURRENT NODES: " + currentNodes);
     for (let i = 0; i < startNodeCount; i++) {
-        currentNodes.push(new Node(Math.floor(Math.random() * windowWidth), 0, 90));
+        currentNodes.push(new Node(Math.floor(Math.random() * windowWidth), 0, 90, undefined));
     }
     frameRate(fps);
     angleMode(DEGREES);
@@ -49,12 +51,12 @@ function setup() {
 }
 function draw() {
     clear();
-    if (millis() >= 5000 + otherTimer) {
+    if (millis() >= 2000 + otherTimer) {
         if (increasing) {
             fetchedTabs++;
             console.log("1 more tab: " + fetchedTabs);
             otherTimer = millis();
-            if (fetchedTabs >= 12) increasing = false;
+            if (fetchedTabs >= preferredTabCount + 3) increasing = false;
         } else {
             fetchedTabs--;
             console.log("1 less tab: " + fetchedTabs);
@@ -63,77 +65,83 @@ function draw() {
         }
     }
 
-    //fetchedTabs = 1; // Change later to get new amount;
     let deltaTabs = fetchedTabs - currentTabs;
     currentTabs = fetchedTabs;
-    //console.log("deltaTabs: " + (fetchedTabs - currentTabs));
-    if (fetchedTabs > preferredTabCount && deltaTabs != 0) {
-        if (deltaTabs > 0) {
+    if (fetchedTabs >= preferredTabCount && deltaTabs != 0) {
+        if (fetchedTabs > preferredTabCount && deltaTabs > 0) {
             remainingIterations += deltaTabs * growthsPerIteration;
-        } else {
+        } else if (deltaTabs < 0) {
             layers.pop();
+            currentNodes = layers[layers.length - 1].nodes;
+            for (var n of currentNodes) {
+                n.others = [];
+            }
         }
     }
 
     //console.log("remaining iterations: " + remainingIterations);
 
     layers.forEach(function (layer) {
-        image(layer, 0, 0);
+        image(layer.graphic, 0, 0);
     });
 
     if (remainingIterations > 0 && millis() >= growthRate + timer) {
+        //console.log(remainingIterations % growthsPerIteration);
         if (remainingIterations % growthsPerIteration === 0) {
-            currentLayer = createGraphics(displayWidth, displayHeight);
+            var layerGraphic = createGraphics(displayWidth, displayHeight);
+            currentLayer = new Layer(currentNodes, layerGraphic);
             layers.push(currentLayer);
         }
         newNodes = []
-        currentNodes.forEach(function (node) {
+        currentLayer.nodes.forEach(function (node) {
             node.grow();
         })
         currentNodes = newNodes
+        currentLayer.nodes = currentNodes;
         timer = millis();
         remainingIterations--;
     }
 }
 
 class Node {
-    constructor(x, y, angle = 0) {
+    constructor(x, y, angle = 0, parent = undefined) {
         this.x = Math.floor(x);
         this.y = Math.floor(y);
         this.angle = Math.floor(angle);
         this.others = [];
+        this.parent = parent;
     }
 
     draw() {
-        currentLayer.stroke(stemColor.r, stemColor.g, stemColor.b);
-        currentLayer.fill(leafColor.r, leafColor.g, leafColor.b);
+        currentLayer.graphic.stroke(stemColor.r, stemColor.g, stemColor.b);
+        currentLayer.graphic.fill(leafColor.r, leafColor.g, leafColor.b);
         let parent = this;
         this.others.forEach(function (other) {
             let x1 = parent.x;
             let y1 = parent.y;
             let x2 = other.x;
             let y2 = other.y;
-            currentLayer.line(x1, y1, x2, y2);
-            currentLayer.strokeWeight(outlineThickness);
+            currentLayer.graphic.line(x1, y1, x2, y2);
+            currentLayer.graphic.strokeWeight(outlineThickness);
             parent.leaf();
-            currentLayer.strokeWeight(stemThickness);
+            currentLayer.graphic.strokeWeight(stemThickness);
             other.draw();
         });
     }
 
     grow() {
-        console.log("no children");
+        //console.log("no children");
         let count = 1;
         if (Math.random() > splitChance) count = 2;
         for (let i = 0; i < count; i++) {
-            console.log(this);
+            //console.log(this);
             let deltaX = cos(this.angle);
             let deltaY = sin(this.angle);
             let deltaAngle; // [-10, 10]
 
             let vineAngle = this.angle;
 
-            console.log("x: " + this.x + " y: " + this.y);
+            //console.log("x: " + this.x + " y: " + this.y);
 
             if (this.x + (deltaX * detectRange) < 0) {
                 console.log("left");
@@ -164,14 +172,14 @@ class Node {
                     deltaAngle = Math.floor(Math.random() * (angleChange * 2 + 1)); // [0, 20]
                 }
             } else {
-                console.log("contained")
+                //console.log("contained")
                 deltaAngle = Math.floor(Math.random() * (angleChange * 2 + 1)) - angleChange;
             }
 
-            console.log("this.x + deltaX: " + this.x + ", " + (deltaX * length));
+            /* console.log("this.x + deltaX: " + this.x + ", " + (deltaX * length));
             console.log("this.y + deltaY: " + this.y + ", " + (deltaY * length));
-            console.log("this.angle + deltaAngle: " + this.angle + ", " + deltaAngle);
-            let other = new Node(this.x + (deltaX * length), this.y + (deltaY * length), (this.angle + deltaAngle) % 360)
+            console.log("this.angle + deltaAngle: " + this.angle + ", " + deltaAngle); */
+            let other = new Node(this.x + (deltaX * length), this.y + (deltaY * length), (this.angle + deltaAngle) % 360, this)
             this.others.push(other);
             newNodes.push(other);
             this.draw();
@@ -193,8 +201,20 @@ class Node {
             let c3 = { x: center.x + (cos(angle) * 50), y: center.y + (sin(angle) * 50) };
             let c4 = { x: -center.x + p2.x + c3.x, y: -center.y + p2.y + c3.y };
 
-            currentLayer.curve(c1.x, c1.y, p1.x, p1.y, p2.x, p2.y, c2.x, c2.y);
-            currentLayer.curve(c3.x, c3.y, p1.x, p1.y, p2.x, p2.y, c4.x, c4.y);
+            currentLayer.graphic.curve(c1.x, c1.y, p1.x, p1.y, p2.x, p2.y, c2.x, c2.y);
+            currentLayer.graphic.curve(c3.x, c3.y, p1.x, p1.y, p2.x, p2.y, c4.x, c4.y);
         }
+    }
+}
+
+class Layer {
+    constructor(nodes = [], graphic) {
+        console.log("OTHER NODES: " + nodes);
+        this.nodes = [];
+        for (var n of nodes) {
+            this.nodes.push(n);
+        }
+        console.log("THESE NODES: " + this.nodes);
+        this.graphic = graphic;
     }
 }
