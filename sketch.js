@@ -1,14 +1,30 @@
+//import { openedTabs } from "./utils.js";
+//const openedTabs = require('utils');
+
 var startNode;
 var currentNodes = []
 var newNodes = [];
+var layers = []
+var currentLayer;
 let timer = 0;
+
+
+let otherTimer = 0;
+let fetchedTabs = 0;
+let increasing = true;
+
+
+let currentTabs = 0;
+var remainingIterations = 0;
+var growthsPerIteration = 10;
+var preferredTabCount = 8;
 
 let length = 5;
 let angleChange = 10;
 let splitChance = 0.99;
 let leafChance = 0.95;
-let fps = 15;
-let growthRate = 100;
+let fps = 30;
+let growthRate = 25;
 let startNodeCount = 15;
 let detectRange = 100;
 let stemColor = { r: 37, g: 66, b: 14 };
@@ -16,8 +32,9 @@ let leafColor = { r: 86, g: 115, b: 53 };
 let outlineThickness = 2;
 let stemThickness = 4;
 
+
 function setup() {
-    let c = createCanvas(windowWidth, windowHeight);
+    let c = createCanvas(displayWidth, displayHeight);
     c.position(0, 0);
     c.style('pointer-events', 'none');
     clear();
@@ -28,17 +45,54 @@ function setup() {
     }
     frameRate(fps);
     angleMode(DEGREES);
+    remainingIterations += growthsPerIteration;
 }
 function draw() {
-    stroke(stemColor.r, stemColor.g, stemColor.b);
-    strokeWeight(outlineThickness);
-    if (millis() >= growthRate + timer) {
+    clear();
+    if (millis() >= 5000 + otherTimer) {
+        if (increasing) {
+            fetchedTabs++;
+            console.log("1 more tab: " + fetchedTabs);
+            otherTimer = millis();
+            if (fetchedTabs >= 12) increasing = false;
+        } else {
+            fetchedTabs--;
+            console.log("1 less tab: " + fetchedTabs);
+            otherTimer = millis();
+            if (fetchedTabs === 0) increasing = true;
+        }
+    }
+
+    //fetchedTabs = 1; // Change later to get new amount;
+    let deltaTabs = fetchedTabs - currentTabs;
+    currentTabs = fetchedTabs;
+    //console.log("deltaTabs: " + (fetchedTabs - currentTabs));
+    if (fetchedTabs > preferredTabCount && deltaTabs != 0) {
+        if (deltaTabs > 0) {
+            remainingIterations += deltaTabs * growthsPerIteration;
+        } else {
+            layers.pop();
+        }
+    }
+
+    //console.log("remaining iterations: " + remainingIterations);
+
+    layers.forEach(function (layer) {
+        image(layer, 0, 0);
+    });
+
+    if (remainingIterations > 0 && millis() >= growthRate + timer) {
+        if (remainingIterations % growthsPerIteration === 0) {
+            currentLayer = createGraphics(displayWidth, displayHeight);
+            layers.push(currentLayer);
+        }
         newNodes = []
         currentNodes.forEach(function (node) {
             node.grow();
         })
         currentNodes = newNodes
         timer = millis();
+        remainingIterations--;
     }
 }
 
@@ -51,18 +105,18 @@ class Node {
     }
 
     draw() {
-        stroke(stemColor.r, stemColor.g, stemColor.b);
-        fill(leafColor.r, leafColor.g, leafColor.b);
+        currentLayer.stroke(stemColor.r, stemColor.g, stemColor.b);
+        currentLayer.fill(leafColor.r, leafColor.g, leafColor.b);
         let parent = this;
         this.others.forEach(function (other) {
             let x1 = parent.x;
             let y1 = parent.y;
             let x2 = other.x;
             let y2 = other.y;
-            line(x1, y1, x2, y2);
-            strokeWeight(outlineThickness);
+            currentLayer.line(x1, y1, x2, y2);
+            currentLayer.strokeWeight(outlineThickness);
             parent.leaf();
-            strokeWeight(stemThickness);
+            currentLayer.strokeWeight(stemThickness);
             other.draw();
         });
     }
@@ -139,8 +193,8 @@ class Node {
             let c3 = { x: center.x + (cos(angle) * 50), y: center.y + (sin(angle) * 50) };
             let c4 = { x: -center.x + p2.x + c3.x, y: -center.y + p2.y + c3.y };
 
-            curve(c1.x, c1.y, p1.x, p1.y, p2.x, p2.y, c2.x, c2.y);
-            curve(c3.x, c3.y, p1.x, p1.y, p2.x, p2.y, c4.x, c4.y);
+            currentLayer.curve(c1.x, c1.y, p1.x, p1.y, p2.x, p2.y, c2.x, c2.y);
+            currentLayer.curve(c3.x, c3.y, p1.x, p1.y, p2.x, p2.y, c4.x, c4.y);
         }
     }
 }
