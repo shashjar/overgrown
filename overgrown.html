@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <style>body {background: #ffffff;}</style>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
+    <style>
+      body {
+        background: #ffffff;
+      }
+    </style>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
   </head>
-  
+
   <body>
-    <div id="title-bar">
+    <div id="header">
+      <img src="images/info.svg" id="info-img" />
+      <h1 id="title">Overgrown</h1>
+      <img src="images/x.svg" id="close-out" />
       <!-- TODO: info button, shows a paragraph of about information on hover
   
       TODO: "Overgrown" title, static color and position
@@ -16,22 +29,27 @@
     </div>
 
     <!-- TODO: make Statistics page -->
-    <div id="statistics">
+    <div id="statistics" class="visible">
       <h1>Statistics</h1>
       <p>Tabs: my brother you got too many open fr</p>
-      <input type="text" id="plant">
+      <input type="text" id="plant" />
     </div>
 
     <!-- TODO: make Preferences page -->
     <div id="preferences">
       <h1>Preferences</h1>
       <p>Plant Type</p>
-      <input type="text" id="plant">
+      <input type="text" id="plant" />
     </div>
 
-    <!-- TODO: make the buttons functional and replace the text in these buttons with SVGs -->
-    <button type="button" id="statistics-button">Statistics</button>
-    <button type="button" id="preferences-button">Preferences</button>
+    <div id="footer">
+      <div id="statistics-button" class="button active-button">
+        <img src="images/stats.svg" alt="Statistics tab button" />
+      </div>
+      <div id="preferences-button" class="button">
+        <img src="images/profile.svg" alt="Profile tab button" />
+      </div>
+    </div>
 
     <script src="./script.js" type="module"></script>
   </body>
