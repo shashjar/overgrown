@@ -53,6 +53,14 @@ p {
   cursor: default;
 }
 
+#header > img {
+  margin: 0 3%;
+}
+
+#close-out {
+  cursor: pointer;
+}
+
 #statistics,
 #preferences {
   height: 81.7%;
@@ -84,7 +92,7 @@ p {
 .button {
   display: flex;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
   background: #e7e6e6;
   border-radius: 0px;
   width: 50%;
@@ -114,6 +122,6 @@ img {
   align-self: center;
   justify-self: center;
   height: 50%;
-  margin: auto;
+  margin: 0;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
