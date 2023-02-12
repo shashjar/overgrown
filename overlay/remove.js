@@ -21,13 +21,15 @@ function main() {
     setTimeout(() => {
       document.getElementById("about-us-container").style.opacity = 0;
     }, 20);
-    const bodyElements = document.getElementsByTagName("body").item(0).children;
-    for (let i = 0; i < bodyElements.length; i++) {
-      removeStyling(bodyElements.item(i));
-    }
     setTimeout(() => {
       overlay.remove();
     }, 500);
+    const bodyElements = document.getElementsByTagName("body").item(0).children;
+    for (let i = 0; i < bodyElements.length; i++) {
+      if (bodyElements.item(i).id !== "overgrown-overlay") {
+        removeStyling(bodyElements.item(i));
+      }
+    }
   } else {
     console.log("Overlay does not exist");
   }

@@ -35,6 +35,7 @@ function main() {
     tag: "div",
     id: "overgrown-overlay",
     style: {
+      boxSizing: "border-box",
       top: 0,
       left: 0,
       height: "100vh",
@@ -48,12 +49,13 @@ function main() {
     tag: "div",
     id: "about-us-container",
     style: {
+      boxSizing: "inherit",
       fontFamily: "$font-stack",
       sansSerif: true,
-      top: "20vh",
-      left: "15vh",
-      height: "50vh",
-      width: "50vw",
+      top: "150px",
+      left: "150px",
+      height: "400px",
+      width: "650px",
       position: "fixed",
       display: "flex",
       flexDirection: "column",
@@ -82,7 +84,11 @@ function main() {
       parent: aboutUsContainer,
       style: {
         color: "#CEE7E6",
-        fontSize: "2.5vh",
+        fontSize: "22px",
+        width: "100%",
+        textAlign: "center",
+        margin: 0,
+        padding: 0,
       },
     }).innerText = text;
   }
